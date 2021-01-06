@@ -9,9 +9,9 @@ https://docs.djangoproject.com/en/3.1/howto/deployment/wsgi/
 
 import os, sys
 #add project path
-sys.path.append('E:\myproject\mywebproject')
+#sys.path.append('E:\myproject\mywebproject')
 # add the virtualenv site-packages path to the sys.path
-sys.path.append('E:\myproject\myprojvenv\Lib\site-packages')
+#sys.path.append('E:\myproject\myprojvenv\Lib\site-packages')
 
 
 
