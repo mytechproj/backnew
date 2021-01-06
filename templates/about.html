@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% block title %}
+Contacts
+{% endblock title %}
+
+{% block head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.1/min/dropzone.min.css">
+
+<style>
+  div.third {
+    background-color: green;
+    opacity: 1;
+  }
+
+  .transparency-grid {
+    background-image: url("/static/img/grid2.jpg");
+  }
+</style>
+{% endblock head %}
+
+{% block body %}
+
+<div class="container py-5">
+  <form method="POST" action="/about" enctype="multipart/form-data">
+    <input type="file" name="file">
+    <input type="submit" value="submit">
+    {% csrf_token %}
+
+  </form>
+</div>
+
+{%if origfilename != "" %}
+<div class="container" my-4>
+
+  <div class="row row-cols-1  row-cols-md-2 ">
+    <div class="col">
+      <div class="card shadow-sm">
+
+        <img src={{origfile}} alt="Image1">
+
+      </div>
+    </div>
+    <div class="col">
+      <div class="card shadow-sm">
+
+        <img src={{remfile}} class="transparency-grid" alt="Image2">
+        <div class="card-body">
+          <div>
+            <div align="center">
+              <a href={{remfile}} class="btn btn-primary" download="downloadd">Download HD</a>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<div class="container">
+
+  <h2 class="font-weight-light text-center text-lg-left mt-2 mb-0">Select Background</h1>
+
+  <hr class="mt-2 mb-2">
+
+  <div class="row text-center text-lg-left">
+    <div class="col-lg-3 col-md-4 col-6">
+      <a href="#" class="d-block mb-4 h-100">
+        <img class="img-fluid img-thumbnail" src="https://source.unsplash.com/pWkk7iiCoDM/400x300" alt="">
+      </a>
+    </div>
+    <div class="col-lg-3 col-md-4 col-6">
+      <a href="#" class="d-block mb-4 h-100">
+        <img class="img-fluid img-thumbnail" src="https://source.unsplash.com/aob0ukAYfuI/400x300" alt="">
+      </a>
+    </div>
+    
+   
+  </div>
+</div>
+{%endif%}
+
+
+
+
+
+{% endblock body %}
