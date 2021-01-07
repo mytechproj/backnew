@@ -141,7 +141,7 @@ def main(imgname):
         #uma output = load_img(prediction_dir+name+'.png')
         #uma out_img = img_to_array(output)
         #uma out_img /= RESCALE
-	
+        print("here1")
         output = Image.open(prediction_dir+name+'.png')        
         out_img = np.array(output)      
         out_img = out_img/RESCALE
@@ -160,7 +160,7 @@ def main(imgname):
         input = Image.open(image_dir)
         inp_img = np.array(input)       
         inp_img = inp_img/RESCALE
-	print ('here2')
+        print("here2")
 
         a_layer = np.ones(shape = (shape[0],shape[1],1))
         rgba_inp = np.append(inp_img,a_layer,axis=2)
@@ -199,9 +199,9 @@ def main(imgname):
         sal_img_scaled[sal_img_scaled>RESCALE] = RESCALE
         """
         # OUTPUT RESULTS
+        print("here3")
 
         inp_img*=RESCALE
-	print ('here3')
         inp_img = np.append(inp_img,RESCALE*a_layer,axis=2)
         #inp_img = cv2.resize(inp_img,(int(shape[1]/3),int(shape[0]/3)))
         rem_back = rem_back_scaled
