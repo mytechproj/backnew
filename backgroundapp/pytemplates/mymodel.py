@@ -119,7 +119,16 @@ def main(imgname):
         save_output(img_name_list[i_test],pred,prediction_dir)
 
         del d1,d2,d3,d4,d5,d6,d7 
-	print("here4")
+    #------ process files
+    #image_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'pytemplates'+ os.sep +'images') # changed to 'images' directory which is populated while running the script    
+    print("here4")
+    names = [name[:-4] for name in img_name_list] #uma   
+    THRESHOLD = 0.9
+    RESCALE = 255
+    LAYER = 2
+    COLOR = (0, 0, 0)
+    THICKNESS = 4
+    SAL_SHIFT = 100
         
    
     
