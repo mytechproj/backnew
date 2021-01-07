@@ -130,4 +130,4 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,"media")
 
 MYMEDIA_URL = '/mymedia/'
-MYMEDIA_ROOT = os.path.join(BASE_DIR,"backgroundapp","pytemplates","images")
+MYMEDIA_ROOT = os.path.join(BASE_DIR,"backgroundapp","pytemplates","results")
