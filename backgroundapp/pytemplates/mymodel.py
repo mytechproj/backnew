@@ -128,7 +128,6 @@ def main(imgname):
     for name in os.listdir(prediction_dir):
         namenew = name        
         print("name="+name)
-	print("size=")
 	print(os.path.getsize(prediction_dir+name))
 
 		
