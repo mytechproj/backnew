@@ -27,7 +27,34 @@ def home_view(request):
     contex = {"variable":"verygood"}
     return render(request,"index.html",contex)
 def about(request):        
-    return render(request,"about.html")    
+    contex = {}
+    if request.method =="POST":     
+        myfile = request.FILES.get("file")        
+        fs = FileSystemStorage(location=settings.MYMEDIA_ROOT)
+        res = ''.join(secrets.choice(string.ascii_lowercase + string.digits) 
+                                                  for i in range(N))
+        name=fs.save(res+myfile.name,myfile)
+        #name=fs.save("dog1.jpg",myfile)
+        print ("name="+name)
+        #print ("url="+fs.url(name))
+        #context['url'] = fs.url(name)
+        main(name)
+        #origfile=main()    
+        #imgurl=fnfilepath()
+        origfile=name
+        aaa = origfile.split(".")
+        remfile=aaa[0]+"-rem.png"        
+        request.session['origfile'] = origfile
+        request.session['remfile'] = remfile
+        origfile = request.session.get('origfile', '')
+        remfile = request.session.get('remfile', '')       
+        contex = {"origfile":"/mymedia/"+origfile,"remfile":"/mymedia/"+remfile,"origfilename":origfile,}       
+        return render(request,"about.html",contex)
+        
+    origfile = request.session.get('origfile', '')
+    remfile = request.session.get('remfile', '')   
+    contex = {"origfile":"/mymedia/"+origfile,"remfile":"/mymedia/"+remfile,"origfilename":origfile,}
+    return render(request,"about.html",contex)      
 def services(request): 
     
     return render(request,"services.html")
