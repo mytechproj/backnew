@@ -50,12 +50,12 @@ def about(request):
         origfile = request.session.get('origfile', '')
         remfile = request.session.get('remfile', '')       
         contex = {"origfile":"/mymedia/"+origfile,"remfile":"/mymedia/"+remfile,"origfilename":origfile,}       
-        return render(request,"about.html")
+        return render(request,"about.html",contex)
         
     origfile = request.session.get('origfile', '')
     remfile = request.session.get('remfile', '')   
     contex = {"origfile":"/mymedia/"+origfile,"remfile":"/mymedia/"+remfile,"origfilename":origfile,}
-    return render(request,"about.html")      
+    return render(request,"about.html",contex)      
 def services(request): 
     
     return render(request,"services.html")
