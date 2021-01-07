@@ -58,9 +58,10 @@ def fnfilepath(strpath):
 def main(imgname):
 
     # --------- 1. get image path and name ---------
-    model_name='u2netp'# change to u2netp
+	
+    model_name='u2netp'# change to u2netp	
     #imgname = "dog1.jpg"
-    image_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'pytemplates','results',imgname) # changed to 'images' directory which is populated while running the script
+    image_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'pytemplates','images',imgname) # changed to 'images' directory which is populated while running the script
     #image_dir = "E:\\DjangoDeepLearning\\djangotutorial\\static\\img" # changed to 'images' directory which is populated while running the script
     prediction_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'pytemplates','results')+ os.sep # changed to 'results' directory which is populated after the predictions
     #prediction_dir = "E:\\DjangoDeepLearning\\djangotutorial\\static\\img" # changed to 'results' directory which is populated after the predictions
