@@ -44,7 +44,7 @@ def save_output(image_name,pred,d_dir):
     image = io.imread(image_name)
     imo = im.resize((image.shape[1],image.shape[0]),resample=Image.BILINEAR)
 
-    pb_np = np.array(imo)
+    #pb_np = np.array(imo)
 
     aaa = img_name.split(".")
     bbb = aaa[0:-1]
@@ -69,7 +69,7 @@ def main(imgname):
 
     #img_name_list = glob.glob(image_dir + os.sep + '*')      
     img_name_list = glob.glob(image_dir)   
-    print("here1111")
+    
     # --------- 2. dataloader ---------
     #1. dataloader
     
@@ -83,7 +83,7 @@ def main(imgname):
                                         batch_size=1,
                                         shuffle=False,
                                         num_workers=0)
-    print("here2")
+    
     # --------- 3. model define ---------
     net = U2NETP(3,1)
     
@@ -94,7 +94,7 @@ def main(imgname):
     else:        
         net.load_state_dict(torch.load(model_dir,map_location="cpu"))
         net.eval()        
-    print("here3")
+    
     # --------- 4. inference for each image ---------    
     for i_test, data_test in enumerate(test_salobj_dataloader):                
         print("inferencing:",img_name_list[i_test].split(os.sep)[-1])        
@@ -118,21 +118,100 @@ def main(imgname):
             os.makedirs(prediction_dir, exist_ok=True)
         save_output(img_name_list[i_test],pred,prediction_dir)
 
-        del d1,d2,d3,d4,d5,d6,d7 
+        del d1,d2,d3,d4,d5,d6,d7
     #------ process files
-    #res_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'pytemplates'+ os.sep +'images') # changed to 'images' directory which is populated while running the script    
-    #names = [for name in os.listdir(prediction_dir)]	
-    print("here55555")
-    #names = [name[:-4] for name in img_name_list] #uma
-    #predpath = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'pytemplates'+ os.sep +'results')
-    for name in os.listdir(prediction_dir):
-        namenew = name        
-        print("name="+name)
-	print(os.path.getsize(prediction_dir+name))
+    #image_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'pytemplates'+ os.sep +'images') # changed to 'images' directory which is populated while running the script    
+     #names = [name[:-4] for name in os.listdir(image_dir)]
+    names = [name[:-4] for name in img_name_list] #uma   
+    THRESHOLD = 0.9
+    RESCALE = 255
+    LAYER = 2
+    COLOR = (0, 0, 0)
+    THICKNESS = 4
+    SAL_SHIFT = 100
 
-		
+    for name in names:
+        name = name[name.rindex(os.sep)+1:] #uma for splitting name        
+        # BACKGROUND REMOVAL
+
+        #if name == '.ipynb_checkpo':
+        #    continue
+        #image_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'pytemplates'+ os.sep +'images') # changed to 'images' directory which is populated while running the script
         
+        #uma output = load_img(prediction_dir+name+'.png')
+        #uma out_img = img_to_array(output)
+        #uma out_img /= RESCALE
+        output = Image.open(prediction_dir+name+'.png')        
+        out_img = np.array(output)      
+        out_img = out_img/RESCALE
+        out_img[out_img > THRESHOLD] = 1
+        out_img[out_img <= THRESHOLD] = 0
+
+        shape = out_img.shape
+        a_layer_init = np.ones(shape = (shape[0],shape[1],1))
+        mul_layer = np.expand_dims(out_img[:,:,0],axis=2)
+        a_layer = mul_layer*a_layer_init
+        rgba_out = np.append(out_img,a_layer,axis=2)
+
+        
+        #uma input = load_img(image_dir)
+        #uma inp_img = img_to_array(input)
+        input = Image.open(image_dir)
+        inp_img = np.array(input)       
+        inp_img = inp_img/RESCALE
+
+        a_layer = np.ones(shape = (shape[0],shape[1],1))
+        rgba_inp = np.append(inp_img,a_layer,axis=2)
+
+        rem_back = (rgba_inp*rgba_out)
+        rem_back_scaled = rem_back*RESCALE
+        """
+        # BOUNDING BOX CREATION
+
+        out_layer = out_img[:,:,LAYER]
+        x_starts = [np.where(out_layer[i]==1)[0][0] if len(np.where(out_layer[i]==1)[0])!=0 else out_layer.shape[0]+1 for i in range(out_layer.shape[0])]
+        x_ends = [np.where(out_layer[i]==1)[0][-1] if len(np.where(out_layer[i]==1)[0])!=0 else 0 for i in range(out_layer.shape[0])]
+        y_starts = [np.where(out_layer.T[i]==1)[0][0] if len(np.where(out_layer.T[i]==1)[0])!=0 else out_layer.T.shape[0]+1 for i in range(out_layer.T.shape[0])]
+        y_ends = [np.where(out_layer.T[i]==1)[0][-1] if len(np.where(out_layer.T[i]==1)[0])!=0 else 0 for i in range(out_layer.T.shape[0])]
+        
+        startx = min(x_starts)
+        endx = max(x_ends)
+        starty = min(y_starts)
+        endy = max(y_ends)
+        start = (startx,starty)
+        end = (endx,endy)
+
+        box_img = inp_img.copy()
+        box_img = cv2.rectangle(box_img, start, end, COLOR, THICKNESS)
+        box_img = np.append(box_img,a_layer,axis=2)
+        box_img_scaled = box_img*RESCALE
+
+        # SALIENT FEATURE MAP
+
+        sal_img = inp_img.copy()
+        add_layer = out_img.copy()
+        add_layer[add_layer==1] = SAL_SHIFT/RESCALE
+        sal_img[:,:,LAYER] += add_layer[:,:,LAYER]
+        sal_img = np.append(sal_img,a_layer,axis=2)
+        sal_img_scaled = sal_img*RESCALE
+        sal_img_scaled[sal_img_scaled>RESCALE] = RESCALE
+        """
+        # OUTPUT RESULTS
+
+        inp_img*=RESCALE
+        inp_img = np.append(inp_img,RESCALE*a_layer,axis=2)
+        #inp_img = cv2.resize(inp_img,(int(shape[1]/3),int(shape[0]/3)))
+        rem_back = rem_back_scaled
+        result_img = Image.fromarray(rem_back.astype('uint8'), 'RGBA')
+        #final_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'pytemplates'+ os.sep +'finalresults'+ os.sep)
+        final_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'pytemplates'+ os.sep +'images'+ os.sep)
+        result_img.save(final_dir+name+'-rem.png')
+        return name+'.png'
+        #fnfilepath(final_dir+name+'.png')
+
+        #display(result_img)
    
+
     
     
     
