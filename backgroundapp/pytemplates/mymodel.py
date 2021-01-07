@@ -60,7 +60,7 @@ def main(imgname):
     # --------- 1. get image path and name ---------
     model_name='u2netp'# change to u2netp
     #imgname = "dog1.jpg"
-    image_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'pytemplates','images',imgname) # changed to 'images' directory which is populated while running the script
+    image_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'pytemplates','results',imgname) # changed to 'images' directory which is populated while running the script
     #image_dir = "E:\\DjangoDeepLearning\\djangotutorial\\static\\img" # changed to 'images' directory which is populated while running the script
     prediction_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'pytemplates','results')+ os.sep # changed to 'results' directory which is populated after the predictions
     #prediction_dir = "E:\\DjangoDeepLearning\\djangotutorial\\static\\img" # changed to 'results' directory which is populated after the predictions
@@ -69,7 +69,7 @@ def main(imgname):
 
     #img_name_list = glob.glob(image_dir + os.sep + '*')      
     img_name_list = glob.glob(image_dir)   
-    
+    print("here1")
     # --------- 2. dataloader ---------
     #1. dataloader
     
@@ -83,7 +83,7 @@ def main(imgname):
                                         batch_size=1,
                                         shuffle=False,
                                         num_workers=0)
-    
+    print("here2")
     # --------- 3. model define ---------
     net = U2NETP(3,1)
     
@@ -94,9 +94,9 @@ def main(imgname):
     else:        
         net.load_state_dict(torch.load(model_dir,map_location="cpu"))
         net.eval()        
-    
+    print("here3")
    
-    # --------- 4. inference for each image ---------    
+    # --------- 4. inference for each image ---------
     for i_test, data_test in enumerate(test_salobj_dataloader):                
         print("inferencing:",img_name_list[i_test].split(os.sep)[-1])        
 
@@ -120,6 +120,7 @@ def main(imgname):
         save_output(img_name_list[i_test],pred,prediction_dir)
 
         del d1,d2,d3,d4,d5,d6,d7
+	print("here4")
    
         return 'test.png'
         
