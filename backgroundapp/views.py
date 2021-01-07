@@ -35,10 +35,11 @@ def about(request):
                                                   for i in range(N))
         name=fs.save(res+myfile.name,myfile)
         #name=fs.save("dog1.jpg",myfile)
-        print ("name="+name)
+        print ("nameimp="+name)
         #print ("url="+fs.url(name))
         #context['url'] = fs.url(name)
         main(name)
+        print ("coming here")
         #origfile=main()    
         #imgurl=fnfilepath()
         origfile=name
