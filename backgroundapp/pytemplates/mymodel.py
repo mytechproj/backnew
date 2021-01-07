@@ -122,11 +122,14 @@ def main(imgname):
     #------ process files
     #res_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'pytemplates'+ os.sep +'images') # changed to 'images' directory which is populated while running the script    
     #names = [for name in os.listdir(prediction_dir)]	
-    print("here44444")
-    #names = [name[:-4] for name in img_name_list] #uma   
+    print("here55555")
+    #names = [name[:-4] for name in img_name_list] #uma
+    #predpath = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'pytemplates'+ os.sep +'results')
     for name in os.listdir(prediction_dir):
         namenew = name        
         print("name="+name)
+	print("size=")
+	print(os.path.getsize(prediction_dir+name))
 
 		
         
