@@ -7,7 +7,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import logout,login
 from django.contrib.auth.models import User
 from django.core.files.storage import FileSystemStorage
-#from .pytemplates.mymodel import main
+from .pytemplates.mymodel import main
 #from .pytemplates.mymodel import fnfilepath
 from mywebproject import settings
 from django.urls import reverse
