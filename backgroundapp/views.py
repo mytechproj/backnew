@@ -35,10 +35,10 @@ def about(request):
                                                   for i in range(N))
         name=fs.save(res+myfile.name,myfile)
         #name=fs.save("dog1.jpg",myfile)
-        print ("nameimp="+name)
+        print ("nameneww="+name)
         #print ("url="+fs.url(name))
         #context['url'] = fs.url(name)
-        main(name)
+        #main(name)
         print ("coming here")
         #origfile=main()    
         #imgurl=fnfilepath()
@@ -50,12 +50,12 @@ def about(request):
         origfile = request.session.get('origfile', '')
         remfile = request.session.get('remfile', '')       
         contex = {"origfile":"/mymedia/"+origfile,"remfile":"/mymedia/"+remfile,"origfilename":origfile,}       
-        return render(request,"about.html",contex)
+        return render(request,"about.html")
         
     origfile = request.session.get('origfile', '')
     remfile = request.session.get('remfile', '')   
     contex = {"origfile":"/mymedia/"+origfile,"remfile":"/mymedia/"+remfile,"origfilename":origfile,}
-    return render(request,"about.html",contex)      
+    return render(request,"about.html")      
 def services(request): 
     
     return render(request,"services.html")
