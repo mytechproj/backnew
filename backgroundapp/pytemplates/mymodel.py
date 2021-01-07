@@ -121,10 +121,10 @@ def main(imgname):
         del d1,d2,d3,d4,d5,d6,d7 
     #------ process files
     #res_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'pytemplates'+ os.sep +'images') # changed to 'images' directory which is populated while running the script    
-    names = [name[:-4] for name in os.listdir(prediction_dir)]	
-    print("here444")
+    #names = [for name in os.listdir(prediction_dir)]	
+    print("here44444")
     #names = [name[:-4] for name in img_name_list] #uma   
-    for name in names:
+    for name in os.listdir(prediction_dir):
         namenew = name        
         print("name="+name)
 
